@@ -1,0 +1,2 @@
+# resetmind
+reset my mind
