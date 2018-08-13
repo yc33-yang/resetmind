@@ -75,6 +75,7 @@ std::string TypingMachine::Print(char separator) {
 	Node *iter;
 	for (iter = home->GetNextNode(); iter; iter = iter->GetNextNode())
 	{
+		// CAUTION: 'iter' shall visit 'end' to append(+=) the 'separator'.
 		if (iter == cursor && separator != 0) {
 			line += separator;
 		}
