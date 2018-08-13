@@ -1,35 +1,74 @@
-// Copyright 2018 <Author>
+// Copyright 2018 yc33-yang
 
 #include "node.h"
 
-Node::Node(char data) {
-  return;
+Node::Node(char data) : data(data), prev(nullptr), next(nullptr) {
+ // nothing to do more
 }
 
 char Node::GetData() {
-  return '\0';
+ return data;
 }
 
 Node* Node::GetPreviousNode() {
-  return nullptr;
+  return prev;
 }
 
 Node* Node::GetNextNode() {
-  return nullptr;
+  return next;
 }
 
 Node* Node::InsertPreviousNode(char data) {
-  return nullptr;
+ Node * newNode = new Node(data, prev, this);
+ if (newNode)
+ {
+  if (prev) {
+   prev->next = newNode;
+  }
+  prev = newNode;
+ }
+ return newNode;
 }
 
 Node* Node::InsertNextNode(char data) {
-  return nullptr;
+ Node * newNode = new Node(data, this, next);
+ if (newNode)
+ {
+  if (next) {
+   next->prev = newNode;
+  }
+  next = newNode;
+
+ }
+ return newNode;
 }
 
 bool Node::ErasePreviousNode() {
-  return false;
+ if (prev)
+ {
+  Node *toRemove = prev;
+  prev = prev->prev;
+  if (prev)
+  {
+   prev->next = this;
+  }
+  delete toRemove;
+  return true;
+ }
+ return false;
 }
 
 bool Node::EraseNextNode() {
-  return false;
+ if (next)
+ {
+  Node *toRemove = next;
+  next = next->next;
+  if (next)
+  {
+   next->prev = this;
+  }
+  delete toRemove;
+  return true;
+ }
+ return false;
 }
