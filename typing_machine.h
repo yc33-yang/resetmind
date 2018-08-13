@@ -1,4 +1,4 @@
-// Copyright 2018 <Author>
+// Copyright 2018 yc33-yang
 
 #ifndef TYPING_MACHINE_H_
 #define TYPING_MACHINE_H_
@@ -8,6 +8,9 @@
 #include "node.h"
 
 class TypingMachine {
+  Node *home, *end, *cursor;
+  int  countChar;
+ 
  public:
   TypingMachine();
   void HomeKey();
