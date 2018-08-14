@@ -3,6 +3,8 @@
 #include "typing_machine.h"
 #include "typing_machine_test.h"
 #include "test.h"
+#include <stdlib.h>
+//#include <time.h>
 
 class TmConstructorTestSuite
 {
@@ -30,40 +32,96 @@ private:
 	  EXPECT_FALSE(tm.TypeKey(1+'~'));
 	  ASSERT_EQ(tm.Print('|'), std::string(" ~|"));
   }
+  static char **maxCharTestExpect;
   static void MaxCharTest()
   {
 	  TypingMachine tm;
+	  char key;
 	  for (int i = 0; i < 212; i++)
 	  {
-		  tm.TypeKey(' ' + i % ('~' - ' '));
+		  key = ' ' + i % ('~' - ' '+1);
+		  tm.TypeKey(key);
 		  tm.Print('1');
-		  tm.TypeKey(' ' + i % ('~' - ' '));
+		  tm.TypeKey(key);
 		  tm.Print('1');
 		  tm.EndKey(); tm.Print('1');
 		  tm.EraseKey(); tm.Print('1');
-		  tm.TypeKey(' ' + i % ('~' - ' ')); tm.Print('1');
+		  tm.TypeKey(key); tm.Print('1');
 		  tm.RightKey(); tm.Print('1');
 		  tm.LeftKey(); tm.Print('1');
 		  tm.HomeKey(); tm.Print('1');
 		  tm.EraseKey(); tm.Print('1');
-		  tm.TypeKey(' ' + i % ('~' - ' ')); tm.Print('1');
+		  tm.TypeKey(key); tm.Print('1');
 		  tm.LeftKey(); tm.Print('1');
 		  for (int j = 0; j <= i / 2; j++)
 		  {
 			  tm.RightKey(); tm.Print('1');
 		  }
-		  tm.TypeKey(' ' + i % ('~' - ' ')); tm.Print('1');
-		  tm.EraseKey(); tm.Print('1');
+		  tm.TypeKey(key); tm.Print('1');
+		  tm.EraseKey(); 
+		  //printf("%s\n", tm.Print(0  ).c_str());
+		  //printf("%s\n", tm.Print('|').c_str());
 	  }
+	  std::string expected = "@?>=<;:987654321BDFHJLNPRTVXZ\\^`bdfhjlnprtvxz|~!#%')+-/13579;=?ACEGIKMOQSUWY[]_acegikmoqsuwy{} \"$&(| ";
+	  //EXPECT_EQ(expected, tm.Print('|'));
   }
+
+
+  inline static char randData() { return rand() % 256; }
+  inline static int  randOperation() { return rand() % 10; }
+
+  static void doRandom()
+  {
+	  int operation;
+	  char data;
+
+	  int doCount = 500 + (rand() % 9999);
+	  TypingMachine tm;
+
+
+	  for (int i = 0; i < doCount; i++)
+	  {
+		  operation = randOperation();
+		  data = randData();
+
+		  switch (operation)
+		  {
+		  case 0: case 6:
+			  tm.LeftKey();
+			  break;
+		  case 1: case 7:
+			  tm.RightKey();
+			  break;
+		  case 2:
+			  tm.HomeKey();
+			  break;
+		  case 3: 
+			  tm.EndKey();
+			  break;
+		  case 4:
+			  tm.EraseKey();
+			  break;
+		  case 5: case 8: case 9:
+			  tm.TypeKey(data);
+			  break;
+		  }
+		  printf("%s", tm.Print(data).c_str());
+	  }
+	  printf("\ncongrat! %d\n", doCount);
+
+  }
+
 public:
   static void RunTest() {
     BarSeparatorTest();
 	validCharTest();
 	MaxCharTest();
+	// doRandom();
     // add more..
   }
 };
+
+
 
 class SomeOtherTestSuite
 {
@@ -76,7 +134,8 @@ public:
 };
 
 void TypingMachineTest() {
-  TmConstructorTestSuite::RunTest();
+	//srand((unsigned int)time(nullptr) + clock());
+	TmConstructorTestSuite::RunTest();
   // add more..
 }
 
