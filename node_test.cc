@@ -147,6 +147,8 @@ private:
 
   }
 
+	
+  // INFO: random tests are not recommended in unit tests because they are not deterministic.
   inline static char randData() { return rand() % 256; }
   inline static int  randOperation() { return rand() % 10; }
 
@@ -204,7 +206,9 @@ public:
   static void RunTest() {
     SingleNodeTest();
 	AtoZTest();
-	doRandom();
+#ifdef DO_NODE_TEST_RANDOM
+	  doRandom();
+#endif
     // add more..
   }
 };
